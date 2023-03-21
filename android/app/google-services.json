@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "106521195477",
+    "project_id": "gurukula-lms-mobile-app",
+    "storage_bucket": "gurukula-lms-mobile-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:106521195477:android:c509bd3e4a7074cf03835c",
+        "android_client_info": {
+          "package_name": "com.example.learning_management"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "106521195477-mnh6492i43ca85fso1stf4lunsimopua.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3gbYqH4VWIxGOl9Rv_h7jR7pAQ0vjLdw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "106521195477-mnh6492i43ca85fso1stf4lunsimopua.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
