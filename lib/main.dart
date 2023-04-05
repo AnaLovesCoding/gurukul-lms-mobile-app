@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learning_management/course_registration.dart';
-import 'package:learning_management/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:learning_management/test_page.dart';
+import 'package:learning_management/home_page.dart';
 import 'firebase_options.dart';
 
 void main() async  {
@@ -33,7 +32,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const TestPage(title: 'Thysys LMS'),
+      home: const HomePage(title: 'Thysys LMS'),
     );
   }
 }

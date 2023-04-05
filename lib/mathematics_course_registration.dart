@@ -4,8 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:learning_management/login_page.dart';
 import 'package:learning_management/mathematics_course.dart';
-import 'package:learning_management/test_page.dart';
-import 'home_page.dart';
+import 'package:learning_management/home_page.dart';
 
 class MCourseRegistration extends StatefulWidget {
   const MCourseRegistration({Key? key, required String title})
@@ -55,7 +54,7 @@ class _MCourseRegistrationState extends State<MCourseRegistration> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                              const TestPage(title: "Home Page")));
+                              const HomePage(title: "Home Page")));
                     },
                     icon: const Icon(Icons.computer_rounded),
                     iconSize: 50,

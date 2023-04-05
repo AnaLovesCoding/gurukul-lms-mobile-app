@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'mathematics_course.dart';
@@ -10,108 +11,129 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var courseList = [];
+  final List<int> colorCodes = <int>[500, 400, 300];
+
+  @override
+  void initState() {
+    courseList = [];
+    FirebaseFirestore.instance
+        .collection("courses")
+        .get()
+        .then((querySnapShot) {
+      print("Sucessfully loaded all courses");
+      querySnapShot.docs.forEach((element) {
+        print(element.data());
+        courseList.add(element.data());
+      });
+      setState(() {});
+    }).catchError((error) {
+      print("Failed to load courses");
+      print(error.toString());
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
+      body: Column(children: [
+        Container(
+          margin: EdgeInsets.only(bottom: 30, top: 30),
+          color: Colors.grey,
+          child: Expanded(
             flex: 15,
-            child: Container(
-              margin: EdgeInsets.only(bottom: 30, top: 30),
-              color: Colors.grey,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.computer_rounded),
-                    iconSize: 50,
-                  ),
-                  Text(
-                    'Learning Management Software',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                  ),
-                  Spacer(),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.menu),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Expanded(
-              flex: 5,
-              child: Container(
-                margin: EdgeInsets.only(left: 10, right: 10),
-                child: Text(
-                  'Welcome to the Best Learning Management Software where you will find broad selection of courses',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 15,
-                    foreground: Paint()
-                      ..style = PaintingStyle.fill
-                      ..strokeWidth = 6
-                      ..color = Colors.blue[700]!,
-                  ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.computer_rounded),
+                  iconSize: 50,
                 ),
-              )),
-          Expanded(
-            flex: 20,
-            child: Container(
-              child: IconButton(
-                icon: Image.network(
-                    'https://media.istockphoto.com/id/1168040655/vector/chalk-doodle-math-blackboard.jpg?s=612x612&w=0&k=20&c=-T5xCvLgJUIMMqQuQoG8u0o1bx9wuTvJdTgc7oIX2Pw=',
-                    fit: BoxFit.fitHeight),
-                iconSize: 900,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const MathematicsCourse(title: 'Mathematics Course',)),
-                  );
-                },
-              ),
+                Text(
+                  'Learning Management Software',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                ),
+                Spacer(),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.menu),
+                ),
+              ],
             ),
           ),
-          Expanded(
+        ),
+        Expanded(
             flex: 5,
             child: Container(
+              margin: EdgeInsets.only(left: 10, right: 10),
               child: Text(
-                '10th Grade mathematics Course',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                'Welcome to the Best Learning Management Software where you will find broad selection of courses',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 15,
+                  foreground: Paint()
+                    ..style = PaintingStyle.fill
+                    ..strokeWidth = 6
+                    ..color = Colors.blue[700]!,
+                ),
               ),
-            ),
-          ),
-          Expanded(
-            flex: 20,
-            child: IconButton(
-              icon: Image.network(
-                  'https://www.sketchappsources.com/resources/source-image/science-icons-miraviolet.png?v1'),
-              iconSize: 800,
-              onPressed: () {},
-            ),
-          ),
-          Expanded(
-            flex: 5,
-            child: Text('10th Grade Science Course'),
-          ),
-          Expanded(
-            flex: 20,
-            child: IconButton(
-              icon: Image.network(
-                  'https://juniortech.org/wp-content/uploads/2019/04/algorithm-icon-362x320px.png'),
-              iconSize: 800,
-              onPressed: () {},
-            ),
-          ),
-          Expanded(
-            flex: 5,
-            child: Text('Algorithms For Beginners'),
-          ),
-        ],
-      ),
+            )),
+        Expanded(
+          flex: 80,
+          child: ListView.builder(
+              padding: const EdgeInsets.all(10),
+              itemCount: courseList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Column(
+                  children: [
+                    IconButton(
+                      icon: Image.network('${courseList[index]['imageUrl']}',
+                          fit: BoxFit.fitHeight),
+                      iconSize: 400,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MathematicsCourse(
+                                    title: 'Mathematics Course',
+                                  )),
+                        );
+                      },
+                    ),
+                    Container(
+                      alignment: Alignment.topCenter,
+                      child: Text(
+                        '${courseList[index]['title']}',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 30,
+                            color: Colors.deepPurple),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.topCenter,
+                      child: Text(
+                        '(Teacher Name: ${courseList[index]['teacherName']})',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                            color: Colors.blue,
+                        ),
+                      ),
+                    ),
+                    const Divider(
+                      height: 20,
+                      thickness: 5,
+                      indent: 10,
+                      endIndent: 0,
+                      color: Colors.grey,
+                    ),
+                  ],
+                );
+              }),
+        ),
+      ]),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

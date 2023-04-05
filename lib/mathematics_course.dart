@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:learning_management/home_page.dart';
 import 'package:learning_management/lesson_page.dart';
 import 'package:learning_management/mathematics_course_registration.dart';
-import 'package:learning_management/test_page.dart';
+import 'package:learning_management/home_page.dart';
 
 class MathematicsCourse extends StatefulWidget {
   const MathematicsCourse({Key? key, required String title}) : super(key: key);
@@ -56,7 +55,7 @@ class _MathematicsCourseState extends State<MathematicsCourse> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      const TestPage(title: "Home Page")));
+                                      const HomePage(title: "Home Page")));
                         },
                         icon: const Icon(Icons.computer_rounded),
                         iconSize: 50,

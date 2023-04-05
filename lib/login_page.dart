@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:learning_management/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:learning_management/test_page.dart';
+import 'package:learning_management/home_page.dart';
 import 'mathematics_course.dart';
 
 class LoginPage extends StatefulWidget {
@@ -37,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                    const TestPage(title: "Home Page")
+                                    const HomePage(title: "Home Page")
                                 )
                             );
                           },
@@ -178,11 +177,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       onPressed: () {
-                        /*Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                            builder: (context) =>  MathematicsCourse(title: "Mathmetics Course")
-                        ));*/
+
                         FirebaseAuth.instance.signInWithEmailAndPassword(
                             email: emailController.text,
                             password: passwordController.text)
