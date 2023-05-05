@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:learning_management/lesson_page.dart';
+import 'package:learning_management/lesson_player_page.dart';
 import 'package:learning_management/mathematics_course_registration.dart';
 import 'package:learning_management/home_page.dart';
 
@@ -152,11 +152,7 @@ class _MathematicsCourseState extends State<MathematicsCourse> {
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const LessonPage(title: "Lesson Page")));
+
                     },
                     title: Container(
                         color: Colors.grey,

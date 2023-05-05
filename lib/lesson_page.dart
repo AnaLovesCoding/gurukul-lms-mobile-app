@@ -1,8 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'dart:async';
-import 'package:video_player/video_player.dart';
-import 'package:vimeo_video_player/vimeo_video_player.dart';
+import 'package:learning_management/lesson_player_page.dart';
+import 'package:learning_management/mathematics_course_registration.dart';
+import 'package:learning_management/home_page.dart';
 
 class LessonPage extends StatefulWidget {
   const LessonPage({Key? key, required String title}) : super(key: key);
@@ -12,83 +12,130 @@ class LessonPage extends StatefulWidget {
 }
 
 class _LessonPageState extends State<LessonPage> {
-  late VideoPlayerController _controller;
-  late Future<void> _initializeVideoPlayerFuture;
+  var lessonList = [];
 
   @override
   void initState() {
-    super.initState();
-
-    // Create and store the VideoPlayerController. The VideoPlayerController
-    // offers several different constructors to play videos from assets, files,
-    // or the internet.
-    _controller = VideoPlayerController.network(
-      'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
-    );
-
-    // Initialize the controller and store the Future for later use.
-    _initializeVideoPlayerFuture = _controller.initialize();
-
-    // Use the controller to loop the video.
-    _controller.setLooping(true);
-  }
-
-
-
-  @override
-  void dispose() {
-    // Ensure disposing of the VideoPlayerController to free up resources.
-    _controller.dispose();
-
-    super.dispose();
+    lessonList = [];
+    FirebaseFirestore.instance
+        .doc("courses/2rhPuS6ZCnNebiIGp3pZ")
+        .collection("lessons")
+        .get()
+        .then((querySnapShot) {
+      print("Sucessfully loaded all courses");
+      querySnapShot.docs.forEach((element) {
+        print(element.data());
+        lessonList.add(element.data());
+      });
+      setState(() {});
+    }).catchError((error) {
+      print("Failed to load courses");
+      print(error.toString());
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Vimeo Video'),
-      ),
-      // Use a FutureBuilder to display a loading spinner while waiting for the
-      // VideoPlayerController to finish initializing.
-      body: FutureBuilder(
-        future: _initializeVideoPlayerFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            // If the VideoPlayerController has finished initialization, use
-            // the data it provides to limit the aspect ratio of the video.
-            return AspectRatio(
-              aspectRatio: _controller.value.aspectRatio,
-              // Use the VideoPlayer widget to display the video.
-              child: VideoPlayer(_controller),
-            );
-          } else {
-            // If the VideoPlayerController is still initializing, show a
-            // loading spinner.
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Wrap the play or pause in a call to `setState`. This ensures the
-          // correct icon is shown.
-          setState(() {
-            // If the video is playing, pause it.
-            if (_controller.value.isPlaying) {
-              _controller.pause();
-            } else {
-              // If the video is paused, play it.
-              _controller.play();
-            }
-          });
-        },
-        // Display the correct icon depending on the state of the player.
-        child: Icon(
-          _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-        ),
+      body: Column(
+        children: [
+          Expanded(
+            flex: 40,
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(bottom: 30, top: 30),
+                  color: Colors.grey,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                  const HomePage(title: "Home Page")));
+                        },
+                        icon: const Icon(Icons.computer_rounded),
+                        iconSize: 50,
+                      ),
+                      Text(
+                        'Learning Management Software',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15),
+                      ),
+                      Spacer(),
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.menu),
+                      ),
+                    ],
+                  ),
+                ),
+
+                Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 50, left: 35, right: 10),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Lessons",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            backgroundColor: Colors.red,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Colors.black),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 100,
+            child: ListView.builder(
+                itemCount: lessonList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                              const LessonPlayerPage(title: "Lesson Page")));
+                    },
+                    title: Container(
+                        color: Colors.grey,
+                        height: 30,
+                        margin: EdgeInsets.only(
+                             bottom: 5, left: 20, right: 20),
+                        child: Row(
+                          children: [
+                            /* Text(
+                              '${lessonList[index]['lessonNumber']}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'RobotoMono',
+                                  color: Colors.black),
+                            ),*/
+                            Spacer(),
+                            Text(
+                              '${lessonList[index]['title']}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'RobotoMono',
+                                  color: Colors.black),
+                            ),
+                            Spacer(),
+                          ],
+                        )),
+                  );
+                }),
+          ),
+        ],
       ),
     );
   }
