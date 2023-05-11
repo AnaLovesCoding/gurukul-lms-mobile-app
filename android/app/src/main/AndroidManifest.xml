@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.learning_management">
+    package="com.lms.learning_management">
 
     <application
         android:name="${applicationName}"

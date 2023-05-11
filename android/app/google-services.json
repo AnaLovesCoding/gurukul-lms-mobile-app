@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:106521195477:android:c509bd3e4a7074cf03835c",
         "android_client_info": {
-          "package_name": "com.example.learning_management"
+          "package_name": "com.lms.learning_management"
         }
       },
       "oauth_client": [
